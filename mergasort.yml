@@ -1,0 +1,38 @@
+registry_server_fqdn: ghcr.io
+
+apps:
+  - name: ms-cervice
+    image: ghcr.io/cerverless/mergesort:nolibc
+    registry_account: jrb-s2c-github
+    namespace: ms
+    replicas: 1
+    application_properties:
+      application.properties: |
+        cervice: mergesort
+  - name: ms-controller
+    image: ghcr.io/cerverless/mergasort_controller:main
+    registry_account: jrb-s2c-github
+    namespace: ms
+    replicas: 1
+    application_properties:
+      application.properties: |
+        cervice: mergasort_controller
+ingress:
+  host: www.demo.io
+  rules:
+    - service: ms-controller
+      namespace: ms
+      ingress_path: /env1/hello
+      service_path: /
+
+namespaces:
+  - name: cervices    
+
+pre_k8s_cmds:
+  - kubectl -n ms delete secret ms-cervice-secret 
+  - kubectl -n ms delete secret ms-controller-secret 
+
+post_k8s_cmds:
+  - kubectl patch -n ms svc ms-controller --type='json' -p '[{"op":"replace","path":"/spec/type","value":"NodePort"}]'
+  - kubectl patch -n ms svc ms-controller --type='json' -p '[{"op":"replace","path":"/spec/ports/0/nodePort","value":32222}]'
+
