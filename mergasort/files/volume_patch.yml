@@ -1,0 +1,7 @@
+spec:
+  template:
+    spec:
+      volumes:
+      - name: nfs-vol
+        persistentVolumeClaim:
+          claimName: pvc-one

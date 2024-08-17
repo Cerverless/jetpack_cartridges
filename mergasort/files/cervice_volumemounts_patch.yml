@@ -1,0 +1,9 @@
+spec:
+  template:
+    spec:
+      containers:
+        - name: ms-cervice
+          image: ghcr.io/cerverless/mergasort_controller:main
+          volumeMounts:
+          - name: nfs-vol
+            mountPath: /app/jobs_busy
