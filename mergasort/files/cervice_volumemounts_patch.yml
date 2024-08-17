@@ -3,7 +3,7 @@ spec:
     spec:
       containers:
         - name: ms-cervice
-          image: ghcr.io/cerverless/mergasort_controller:main
+          image: ghcr.io/cerverless/mergesort:nolibc
           volumeMounts:
           - name: nfs-vol
             mountPath: /app/jobs_busy
