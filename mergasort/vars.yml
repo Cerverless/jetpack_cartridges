@@ -8,7 +8,7 @@ apps:
     replicas: 1
     application_properties:
       application.properties: |
-        cervice: mergesort
+        round:1
   - name: ms-controller
     image: ghcr.io/cerverless/mergasort_controller:main
     registry_account: jrb-s2c-github
@@ -16,7 +16,7 @@ apps:
     replicas: 1
     application_properties:
       application.properties: |
-        cervice: mergasort_controller
+        cervice: ms-controller
 ingress:
   host: www.demo.io
   rules:
@@ -29,7 +29,7 @@ namespaces:
   - name: ms 
 
 pre_k8s_cmds:
-  - kubectl get pods -A
+  - kubectl delete persistentvolume pvvol-1
   #- kubectl -n ms delete secret ms-cervice-secret 
   #- kubectl -n ms delete secret ms-controller-secret 
 
@@ -42,5 +42,7 @@ post_k8s_cmds:
   - kubectl patch -n ms deployment ms-cervice --patch-file /home/ansible/files/volume_patch.yml
   - kubectl patch -n ms deployment ms-controller --type merge --patch-file /home/ansible/files/controller_volumemounts_patch.yml
   - kubectl patch -n ms deployment ms-cervice --type merge --patch-file /home/ansible/files/cervice_volumemounts_patch.yml
+  - kubectl create -f /home/ansible/files/permissive-role.yml 
+  - kubectl create -f /home/ansible/files/sa_rolebind.yml
   
 

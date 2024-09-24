@@ -1,0 +1,32 @@
+git_server_fqdn: github.com
+
+apps:
+  - name: ms-scaler
+    git_account: Cerverless
+    git_repo: mergasort_scaler
+    integration_dir: .
+    namespace: msjava
+    git_branch: main
+    replicas: 1
+    application_properties:
+      application.properties: |
+        my_name: MergaSortScaler
+ingress:
+  host: www.demo.io
+  rules:
+    - service: hello1
+      namespace: env1
+      ingress_path: /env1/hello
+      service_path: /
+
+namespaces:
+  - name: msjava
+
+mvn_parents:
+  - name: ms-scaler
+
+pre_k8s_cmds:
+  - kubectl get nodes
+
+post_k8s_cmds:
+  - kubectl get pods -A

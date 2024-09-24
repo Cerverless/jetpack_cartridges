@@ -12,4 +12,6 @@ spec:
   nfs:
     path: /opt/sfw
     server: k8scp
-    readOnly: false  
+    readOnly: false 
+  mountOptions:
+    - actimeo=1
